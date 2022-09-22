@@ -61,9 +61,13 @@ exports.createContact = async (req, res, next) => {
 exports.updateContact = async(req, res, next) => {
 
     let contact = await Contact.findById(req.params.id)
+
+    if (!contact) {
+        return res.status(404).json({ success: false, msg: "Contact not found" });
+      }
     
     //make sure user is contact owner
-    if(contact.user.toString() !== req.user.id || !contact ){
+    if(contact.user.toString() !== req.user.id){
         return res.status(401).json({
             success: false,
             msg:  `User has no Authorizations for updation of contact`
@@ -87,6 +91,10 @@ exports.deleteContact = async( req, res, next) => {
 
     let contact = await Contact.findById(req.params.id)
     
+    if (!contact) {
+        return res.status(404).json({ success: false, msg: "Contact not found" });
+      }
+
     //make sure user is contact owner
     if(contact.user.toString() !== req.user.id){
         return res.status(401).json({

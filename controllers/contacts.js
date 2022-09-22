@@ -63,7 +63,7 @@ exports.updateContact = async(req, res, next) => {
     let contact = await Contact.findById(req.params.id)
     
     //make sure user is contact owner
-    if(contact.user.toString() !== req.user.id){
+    if(contact.user.toString() !== req.user.id || !contact ){
         return res.status(401).json({
             success: false,
             msg:  `User has no Authorizations for updation of contact`
